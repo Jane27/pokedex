@@ -2,13 +2,19 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { limit } from '../util'
-
-
+import { initLimit, initOffset } from '../util'
+import { Pagination } from '../components'
 
 const Title = styled.h1`
   color: black;
   margin-top: 50px;
+`;
+
+const Header = styled.div`
+  display:flex;
+  justify-content: flex-end;
+  margin: 30px auto;
+  width:80%;
 `;
 
 const Item = styled.div`
@@ -30,16 +36,25 @@ const Content = styled.div`
 `;
 
 const PokemonList = ({ list, fetchPokemons }) => {
-  const { count, next, results } = list
+
+
+
 
   useEffect(() => {
-    fetchPokemons();
+    fetchPokemons(offset > initLimit ? offset - initLimit : initOffset);
   }, []);
+  const { count, offset, results } = list
+  console.log(`....curr`, offset, initOffset)
 
   return (
     <>
       <Title>My Pokedex</Title>
-      <button onClick={() => fetchPokemons(next ? limit : 0)}>More {results.length} / {count})</button>
+      <Header>
+        <Pagination
+          total={Math.ceil(count / initLimit)}
+          currentPage={offset > 0 ? offset / initLimit : Math.ceil(count / initLimit)}
+          onPageChange={(index) => fetchPokemons(index * initLimit)} />
+      </Header>
 
       <Content>
         {results.map(({ name, url }, index) => {

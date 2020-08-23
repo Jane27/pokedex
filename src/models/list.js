@@ -1,39 +1,30 @@
 import { getPokemons } from '../services/api'
-import { limit } from '../util'
+import { initOffset } from '../util'
 import qs from 'querystring'
 
 const list = {
   state: {
     count: 0,
-    next: null,
-    previous: null,
+    offset: 0,
     results: [],
-    total: []
   },
 
   reducers: {
     setPokemansList: (state, payload) => ({
       ...state,
-      ...payload
+      count: payload.count,
+      offset: payload.next === null ? initOffset : Number(qs.parse(payload.next.split("?")[1]).offset),
+      results: payload.results
     }),
   },
 
   effects: dispatch => ({
     async fetchPokemons(params, rootState) {
-      const url = rootState.list.next;
-      const tempLimit = url === null ? limit : qs.parse(url.split("?")[1]).offset
-      const displayLimit = params ? Number(tempLimit) + Number(params) : tempLimit
 
-      let res = await getPokemons(displayLimit)
+      let res = await getPokemons(params)
 
       if (res) {
-        this.setPokemansList(
-          {
-            count: res.count,
-            next: res.next,
-            previous: res.previous,
-            results: res.results
-          })
+        this.setPokemansList(res)
       }
     },
   }),

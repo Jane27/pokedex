@@ -1,2 +1,2 @@
-export const offset = 0
-export const limit = 150
+export const initOffset = 0
+export const initLimit = 150

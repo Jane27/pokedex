@@ -14,7 +14,14 @@ const detail = {
   reducers: {
     setPokemansDetail: (state, payload) => ({
       ...state,
-      ...payload
+      loading: true,
+      name: payload.name,
+      image: payload.sprites.other.dream_world.front_default,
+      baseExperience: payload.base_experience,
+      isDefault: payload.is_default.toString(),
+      height: payload.height,
+      weight: payload.weight,
+      types: payload.types.map(({ type }) => type.name)
     }
     )
   },
@@ -22,16 +29,7 @@ const detail = {
     async fetchPokemonDetail(params, rootState) {
       let res = await getPokemonDetail(params)
       if (res) {
-        this.setPokemansDetail({
-          loading: true,
-          name: res.name,
-          image: res.sprites.other.dream_world.front_default,
-          baseExperience: res.base_experience,
-          isDefault: res.is_default.toString(),
-          height: res.height,
-          weight: res.weight,
-          types: res.types.map(({ type }) => type.name)
-        })
+        this.setPokemansDetail(res)
       }
 
     },
