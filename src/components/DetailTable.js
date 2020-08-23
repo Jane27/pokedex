@@ -2,12 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import get from "lodash/get";
 
-
 const Content = styled.h4`
-	display:flex;
-	flex-direction: column;
-	align-items: flex-start;
-	margin:0 auto;
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin:0 auto;
   width:80%;
   margin-bottom:50px;
 `;
