@@ -22,3 +22,9 @@ npm install
 ```
 npm run start
 ```
+
+## Build for production
+
+```
+npm run build
+```
